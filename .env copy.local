@@ -1,0 +1,10 @@
+# Example .env.local file for MySQL Database credentials
+
+MYSQL_USERNAME = doadmin
+MYSQL_PASSWORD = VEZYjETOGhPb0yet
+MYSQL_HOST = privatenext-do-user-10895685-0.b.db.ondigitalocean.com
+MYSQL_PORT = 25060
+MYSQL_DATABASE = defaultdb
+sslmode = REQUIRED
+
+# mysql -u doadmin -pVEZYjETOGhPb0yet -h privatenext-do-user-10895685-0.b.db.ondigitalocean.com -P 25060 < 
