@@ -4,7 +4,7 @@ import ButtonLink from '@/components/button-link'
 
 export default function Nav({ title = 'Entries' }) {
   return (
-    <Container className="py-4">
+    <Container>
       <nav>
         <div className="flex justify-between items-center">
           <Link href="/">

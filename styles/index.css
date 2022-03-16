@@ -16,3 +16,17 @@
 /* Stop purging. */
 
 /* Your own custom utilities */
+
+.container-scroller {
+  display: flex;
+  position: relative;
+  overflow: hidden;
+}
+
+body {
+  min-height: 100vh !important;
+}
+
+/* a.nav-link-hover{
+  background: ;
+} */

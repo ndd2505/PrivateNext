@@ -6,14 +6,25 @@ const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
 const request = require('request');
+const donwnloadMP4 = require("m3u8-to-mp4");
+const converter = new donwnloadMP4();
+const querySql = require("./sqlquerry");
+const TelegramBot = require('node-telegram-bot-api');
+
+const mysql = require('mysql2');
+const connection = mysql.createConnection(`mysql://4e3ydvcarv0p:pscale_pw__YiuQ4muUdpTVOvPO5BwG-jz__50r1jgB4wb0PfQn8Y@qq30jitimhcw.ap-southeast-2.psdb.cloud/firstdemo?ssl={"rejectUnauthorized":true}`)
 
 app.prepare().then(() => {
     const server = express();
 
+    server.get('/demosql',(req,res) => {
+        querySql?.fnDemo()
+    })
+
     server.get('/demo', (req, res) => {
         const arr = []
 
-        request.get('http://demo.automationtesting.in/Frames.html', function(err, response, body) {
+        request.get('http://duytheegg.tech', function(err, response, body) {
             if (!err && response.statusCode == 200) {
 
                 const $ = cheerio.load(body);
@@ -28,7 +39,7 @@ app.prepare().then(() => {
                     return res.send("Non sign of iframe" + body)
                 } else {
                     return res.send(
-                        arr.map((item) => `<a target="_blank" href="//${item}">${item}</a></br>`).join("")
+                        arr.map((item) => `<a target="_blank" href="${item}">${item}</a></br>`).join("")
                     );
                 }
 
@@ -36,6 +47,33 @@ app.prepare().then(() => {
         });
 
     });
+
+    server.get('/download*', (req, res) => {
+        console.log(req)
+    })
+
+    server.get('/telegram', (req, res) => {
+        // replace the value below with the Telegram token you receive from @BotFather
+        const token = '5173435472:AAHEbNuON-1pb0m3p52HcPs5QERDfC23WDA';
+
+        // Create a bot that uses 'polling' to fetch new updates
+        const bot = new TelegramBot(token, {polling: true});
+
+        // bot.on('message', (msg) => {
+        //     const chatId = msg.chat.id;
+    
+        //     // send a message to the chat acknowledging receipt of their message
+        //     bot.sendMessage(1055939339, msg.chat.id + "---" + req.query?.mes);
+        // });
+
+        console.log(req)
+
+        bot.sendMessage(1055939339,`Message From Ip:${req.ip}
+        Messages:${req.query?.mes}
+        `);
+
+        res.sendStatus(200);
+    })
 
     server.all('*', (req, res) => {
         return handle(req, res)
