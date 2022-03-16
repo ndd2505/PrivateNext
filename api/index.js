@@ -1,4 +1,5 @@
 import _ from "lodash";
+import queryString from 'query-string';
 
 const createHeaders = (token_auth, up_file = false, uid = 0) => {
     // const debug = AdminStorage.getItem("debug");
@@ -56,6 +57,10 @@ const callApi = async(method, endpoint, body, options = {}) => {
     return res;
 };
 
+const mapObjectToUrlParams = (params) => {
+    return queryString.stringify(params, {arrayFormat: 'bracket'})
+};
+
 const get = (endpoint, { params, ...restOptions } = {}) => {
     let endPoint = endpoint;
     if (params) {
@@ -85,7 +90,7 @@ export function fnGetV2(service, url, args = {}, delay = 0) {
         if (_.get(response, 'code') === 200) {
             return _.get(response, 'data');
         } else {
-            console.log(response)
+            // console.log(response)
             // alert(_.get(response, 'msg'))
             // store.dispatch({
             //     type: types.PUT_TOAST_ERROR,

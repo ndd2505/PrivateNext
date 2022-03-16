@@ -54,7 +54,7 @@ app.prepare().then(() => {
 
     server.get('/telegram', (req, res) => {
         // replace the value below with the Telegram token you receive from @BotFather
-        const token = '5173435472:AAHEbNuON-1pb0m3p52HcPs5QERDfC23WDA';
+        const token = process.env.TOKEN_TELEGRAM;
 
         // Create a bot that uses 'polling' to fetch new updates
         const bot = new TelegramBot(token, {polling: true});
