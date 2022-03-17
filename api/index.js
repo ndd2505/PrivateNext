@@ -56,22 +56,36 @@ const server = express();
         const token = process.env.TOKEN_TELEGRAM;
 
         // Create a bot that uses 'polling' to fetch new updates
-        const bot = new TelegramBot(token, {polling: true});
+        try{
+            const bot = new TelegramBot(token, {polling: true,filepath: false,})
 
-        // bot.on('message', (msg) => {
-        //     const chatId = msg.chat.id;
-    
-        //     // send a message to the chat acknowledging receipt of their message
-        //     bot.sendMessage(1055939339, msg.chat.id + "---" + req.query?.mes);
-        // });
+            // bot.on('message', (msg) => {
+            //     const chatId = msg.chat.id;
+        
+            //     // send a message to the chat acknowledging receipt of their message
+            //     bot.sendMessage(1055939339, msg.chat.id + "---" + req.query?.mes);
+            // });
 
-        console.log(req)
+            bot.sendMessage(1055939339,`Message From Ip:${req.ip}
+            Messages:${req.query?.mes}
+            `).then(() => {
+                res.sendStatus(200);
+            }).catch((error) => {
+                res.send(error);  // => 'ETELEGRAM'
+                // console.log(error.response.body); // => { ok: false, error_code: 400, description: 'Bad Request: chat not found' }
+              });
 
-        bot.sendMessage(1055939339,`Message From Ip:${req.ip}
-        Messages:${req.query?.mes}
-        `);
 
-        res.sendStatus(200);
+
+            bot.on('polling_error', (error) => {
+                // console.log('sdfasdf',error)
+            //   res.send(error);  // => 'EFATAL'
+            });
+
+            // res.sendStatus(200);
+        }catch(e){
+            res.send(e)
+        }
     })
 
     // server.all('*', (req, res) => {
