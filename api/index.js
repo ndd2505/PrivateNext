@@ -52,7 +52,7 @@ app.prepare().then(() => {
         console.log(req)
     })
 
-    server.get('/telegram', (req, res) => {
+    server.get('/api/telegram', (req, res) => {
         // replace the value below with the Telegram token you receive from @BotFather
         const token = process.env.TOKEN_TELEGRAM;
 
