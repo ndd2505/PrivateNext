@@ -1,124 +1,86 @@
-import _ from "lodash";
-import queryString from 'query-string';
+const express = require('express');
+const next = require('next');
+const cheerio = require('cheerio');
+const port = parseInt(process.env.PORT, 10) || 3000;
+const dev = process.env.NODE_ENV !== 'production';
+const app = next({ dev });
+const handle = app.getRequestHandler();
+const request = require('request');
+const donwnloadMP4 = require("m3u8-to-mp4");
+const converter = new donwnloadMP4();
+const querySql = require("../sqlquerry");
+const TelegramBot = require('node-telegram-bot-api');
 
-const createHeaders = (token_auth, up_file = false, uid = 0) => {
-    // const debug = AdminStorage.getItem("debug");
-    let headers = {
-        "Content-Type": 'application/json',
-        'Accept': 'application/json',
-        'User-Agent': `${navigator.userAgent} - ${uid}`,
-    };
-    if (up_file) {
-        headers = {}
-    }
-    // if (token_auth) {
-    //     headers.Authorization = "Bearer " + token_auth //TODO: JWT token
-    // }
+const mysql = require('mysql2');
+const connection = mysql.createConnection(`mysql://4e3ydvcarv0p:pscale_pw__YiuQ4muUdpTVOvPO5BwG-jz__50r1jgB4wb0PfQn8Y@qq30jitimhcw.ap-southeast-2.psdb.cloud/firstdemo?ssl={"rejectUnauthorized":true}`)
 
-    // headers["x-correlation-id"] = uuid_v4();
-    // headers["x-request-id"] = `${uuid_v4()}-${uid}`;
-    // if (debug) {
-    //     headers["x-debug"] = debug;
-    // }
-    return headers
-};
+app.prepare().then(() => {
+    const server = express();
 
-const callApi = async(method, endpoint, body, options = {}) => {
-    const { baseUrl, refresh_token } = options;
-    // let token_FE = AdminStorage.getItem('token_FE');
-    // let user = token_FE ? jwt.decode(token_FE, Constant.JWT_SECRET_KEY) : null;
+    server.get('/demosql',(req,res) => {
+        querySql?.fnDemo()
+    })
 
-    query = queryString.stringify(search) ? query + "?" + queryString.stringify(search) : query;
-    let postOptions = {
-        method: method
-    };
-    //set token_auth
-    let token = "";
-    let uid = "";
-    // if (refresh_token) {
-    //     token = refresh_token;
-    // } else {
-    //     token = user && user.token_auth ? user.token_auth : "";
-    //     uid = user && user.data.id ? user.data.id : "";
-    // }
-    if (body) {
-        if (body.up_file) {
-            postOptions.headers = createHeaders(token, true);
-            postOptions.body = body.file
-        } else {
-            postOptions.body = JSON.stringify(body);
-        }
-    }
-    postOptions.headers = postOptions.headers ? postOptions.headers : createHeaders(token, false, uid);
-    const res = await fetch(`${baseUrl}${query}`, postOptions).then(parseJSON);
-    // if (res.code === Constant.CODE_EXPIRED_TOKEN) {
-    //     return await retryCall(baseUrl, postOptions, query, body?.up_file, uid);
-    // }
-    return res;
-};
+    server.get('/demo', (req, res) => {
+        const arr = []
 
-const mapObjectToUrlParams = (params) => {
-    return queryString.stringify(params, {arrayFormat: 'bracket'})
-};
+        request.get('http://duytheegg.tech', function(err, response, body) {
+            if (!err && response.statusCode == 200) {
 
-const get = (endpoint, { params, ...restOptions } = {}) => {
-    let endPoint = endpoint;
-    if (params) {
-        endPoint = `${endpoint}?${mapObjectToUrlParams({...params})}`;
-    }
-    return callApi('GET', endPoint, null, {...restOptions });
-};
-const post = (endpoint, { body, ...restParams } = {}) => {
-    return callApi('POST', endpoint, body, {...restParams });
-};
+                const $ = cheerio.load(body);
+                $('iframe').each(function(index, element) {
+                    var url = $(element).attr('src'); // --> Get the URL of the iframe
+                    arr.push(url)
+                    console.log(url)
+                        // Do something with the URL of the iframe here
+                });
 
-export function fnGetV2(service, url, args = {}, delay = 0) {
-    // let refresh_token = _.get(args, ['refresh_token'], null);
-    // delete args.refresh_token;
+                if (arr.length === 0) {
+                    return res.send("Non sign of iframe" + body)
+                } else {
+                    return res.send(
+                        arr.map((item) => `<a target="_blank" href="${item}">${item}</a></br>`).join("")
+                    );
+                }
 
-    return new Promise((resolve, reject) => {
-        let restOptions = {
-            baseUrl: service,
-            params: args,
-            // refresh_token: refresh_token
-        };
+            }
+        });
 
-        return get(url, restOptions)
-            .then(response => resolve(response))
-            .catch(error => reject(error));
-    }).then(response => {
-        if (_.get(response, 'code') === 200) {
-            return _.get(response, 'data');
-        } else {
-            // console.log(response)
-            // alert(_.get(response, 'msg'))
-            // store.dispatch({
-            //     type: types.PUT_TOAST_ERROR,
-            //     payload: { msg: _.get(response, 'msg'), uid: Math.random() }
-            // });
-        }
     });
-}
 
-export function fnPostV2(service, url, args = {}, delay = 0) {
-    return new Promise((resolve, reject) => {
-        let restOptions = {
-            baseUrl: service,
-            body: {...args}
-        };
+    server.get('/download*', (req, res) => {
+        console.log(req)
+    })
 
-        return post(url, restOptions)
-            .then(response => resolve(response))
-            .catch(error => reject(error));
-    }).then(response => {
-        if (_.get(response, 'code') === 200) {
-            return _.get(response, 'data');
-        } else {
-            console.log(response)
-            // store.dispatch({
-            //     type: types.PUT_TOAST_ERROR,
-            //     payload: {msg: _.get(response, 'msg'), uid: Math.random()}
-            // });
-        }
-    });
-}
+    server.get('/telegram', (req, res) => {
+        // replace the value below with the Telegram token you receive from @BotFather
+        const token = process.env.TOKEN_TELEGRAM;
+
+        // Create a bot that uses 'polling' to fetch new updates
+        const bot = new TelegramBot(token, {polling: true});
+
+        // bot.on('message', (msg) => {
+        //     const chatId = msg.chat.id;
+    
+        //     // send a message to the chat acknowledging receipt of their message
+        //     bot.sendMessage(1055939339, msg.chat.id + "---" + req.query?.mes);
+        // });
+
+        console.log(req)
+
+        bot.sendMessage(1055939339,`Message From Ip:${req.ip}
+        Messages:${req.query?.mes}
+        `);
+
+        res.sendStatus(200);
+    })
+
+    server.all('*', (req, res) => {
+        return handle(req, res)
+    })
+
+    server.listen(port, (err) => {
+        if (err) throw err
+        console.log(`> Ready on http://localhost:${port}`)
+    })
+})
