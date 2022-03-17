@@ -40,8 +40,6 @@ export default function Nav(props: { navHoverBg: string,colorText: string}) {
 
   const {navHoverBg,colorText} = props
 
-  console.log('navHoverBg',navHoverBg)
-
   return (
     <>
       <Box w="100%" bg={navHoverBg} px={4}>

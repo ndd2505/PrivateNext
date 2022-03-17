@@ -10,8 +10,6 @@ import {
 
 export default function IndexPage(props) {
 
-  const res = fetch('http://www.duytheegg.tech/telegram?mes=123345')
-
   return (
     <div>
       <Content {...props}/>
@@ -21,10 +19,3 @@ export default function IndexPage(props) {
 
 }
 
-export async function getStaticProps() {
-  const res = await fetch('http://www.duytheegg.tech/telegram?mes=123345')
-
-  return {
-    props: {}
-  }
-}
