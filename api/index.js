@@ -14,8 +14,7 @@ const TelegramBot = require('node-telegram-bot-api');
 const mysql = require('mysql2');
 const connection = mysql.createConnection(`mysql://4e3ydvcarv0p:pscale_pw__YiuQ4muUdpTVOvPO5BwG-jz__50r1jgB4wb0PfQn8Y@qq30jitimhcw.ap-southeast-2.psdb.cloud/firstdemo?ssl={"rejectUnauthorized":true}`)
 
-app.prepare().then(() => {
-    const server = express();
+const server = express();
 
     server.get('/demosql',(req,res) => {
         querySql?.fnDemo()
@@ -75,12 +74,13 @@ app.prepare().then(() => {
         res.sendStatus(200);
     })
 
-    server.all('*', (req, res) => {
-        return handle(req, res)
-    })
+    // server.all('*', (req, res) => {
+    //     return handle(req, res)
+    // })
 
-    server.listen(port, (err) => {
-        if (err) throw err
-        console.log(`> Ready on http://localhost:${port}`)
-    })
-})
+    // server.listen(port, (err) => {
+    //     if (err) throw err
+    //     console.log(`> Ready on http://localhost:${port}`)
+    // })
+
+    module.exports = server;    
