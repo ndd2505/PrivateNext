@@ -68,8 +68,9 @@ const server = express();
 
             bot.sendMessage(1055939339,`Message From Ip:${req.ip}
             Messages:${req.query?.mes}
-            `).then(() => {
-                res.sendStatus(200);
+            `).then((res) => {
+                res.send(res)
+                // res.sendStatus(200);
             }).catch((error) => {
                 res.send(error);  // => 'ETELEGRAM'
                 // console.log(error.response.body); // => { ok: false, error_code: 400, description: 'Bad Request: chat not found' }
