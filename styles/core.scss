@@ -23507,3 +23507,8 @@
     flex-grow: 1; }
   
   /*# sourceMappingURL=../maps/modern-vertical/style.css.map */
+
+  body * {
+    transition-property: color, background-color;
+    transition-duration: .3s;
+  }

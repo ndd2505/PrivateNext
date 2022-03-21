@@ -34,7 +34,7 @@ const NavLink = ({ children }: { children: ReactNode }) => (
   </Link>
 );
 
-export default function Nav(props: { navHoverBg: string,colorText: string}) {
+export default function Nav(props: { navHoverBg: string,navHoverBg2: string,primaryColor: string,colorText2: string,colorText: string}) {
   const { colorMode, toggleColorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
 

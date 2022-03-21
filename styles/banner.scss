@@ -1,0 +1,86 @@
+.banner {
+    background: linear-gradient(to right, #0c1445 0%, #4c408e 100%);
+  }
+
+  #banner{
+      position: relative;
+      overflow: hidden;
+      max-height: 90vh;
+  }
+  
+  #sky {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+  }
+  
+  #shootingstars {
+    z-index: 0;
+    top: 0;
+    left:0;
+    margin: 0;
+    padding: 0;
+    width: 150vh;
+    height: 100vw;
+    position: absolute;
+    overflow: hidden;
+    transform: translatex(calc(50vw - 50%)) translatey(calc(50vh - 50%))
+      rotate(120deg);
+  }
+  
+  .wish {
+    height: 2px;
+    top: 300px;
+    width: 100px;
+    margin: 0;
+    opacity: 0;
+    padding: 0;
+    background-color: white;
+    position: absolute;
+    background: linear-gradient(-45deg, white, rgba(0, 0, 255, 0));
+    filter: drop-shadow(0 0 6px white);
+    overflow: hidden;
+  }
+
+  .thesun{
+      position: absolute;
+      border-radius: 9999px;
+    //   box-shadow: 0 0 0 20px #ffde00, 0 0 0 20px #ffde00;
+      z-index: 10;
+      right: 10%;
+      top: 10%;
+      width: 15vw;
+      height: 15vw;
+      max-width: 120px;
+      min-width: 120px;
+      max-height: 120px;
+      min-height: 120px;
+      background: yellow;
+      animation: rotateani 10s infinite linear;
+      box-shadow: 0 0 20px 20px yellow;
+      transition: top 4s;
+  }
+
+  @keyframes rotateani {
+    from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+  }
+
+  .bannerText{
+    position: absolute;
+    top: 30%;
+    bottom: 0;
+    left: 0;
+    font-size: 3em;
+    right: 0;
+    text-align: center;
+    padding: 16px;
+  }
+  

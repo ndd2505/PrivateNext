@@ -12,7 +12,7 @@ const querySql = require("../sqlquerry");
 const TelegramBot = require('node-telegram-bot-api');
 
 const mysql = require('mysql2');
-const connection = mysql.createConnection(`mysql://4e3ydvcarv0p:pscale_pw__YiuQ4muUdpTVOvPO5BwG-jz__50r1jgB4wb0PfQn8Y@qq30jitimhcw.ap-southeast-2.psdb.cloud/firstdemo?ssl={"rejectUnauthorized":true}`)
+// const connection = mysql.createConnection(`mysql://4e3ydvcarv0p:pscale_pw__YiuQ4muUdpTVOvPO5BwG-jz__50r1jgB4wb0PfQn8Y@qq30jitimhcw.ap-southeast-2.psdb.cloud/firstdemo?ssl={"rejectUnauthorized":true}`)
 
 const server = express();
 

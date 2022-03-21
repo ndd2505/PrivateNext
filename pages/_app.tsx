@@ -1,6 +1,7 @@
 import '../styles/index.css';
 import '../styles/sidebar.css';
 import '../styles/core.scss';
+import '../styles/banner.scss';
 import Footer from '@/components/footer';
 import SideBar from '@/components/sidebar';
 import Container from '@/components/container';

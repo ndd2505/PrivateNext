@@ -12,9 +12,15 @@ import DarkModeSwitch from '../DarkModeSwitch'
 
 const Container = ({children}) => {
 
-  const navHoverBg = useColorModeValue('gray.700', 'gray.200')
+  const navHoverBg = useColorModeValue('#041C32', '#F5F5F5')
 
-  const colorText = useColorModeValue('white', 'black')
+  const navHoverBg2 = useColorModeValue('#04293A', '#F05454')
+
+  const colorText = useColorModeValue('#fff', '#121212')
+
+  const colorText2 = useColorModeValue('#ECB365', '#30475E')
+
+  const primaryColor = useColorModeValue('#9b94c2ba', '#1045a2b8')
 
   const {colorMode} = useColorMode()
 
@@ -35,7 +41,7 @@ const Container = ({children}) => {
   return (
     <>
       <StickNav>
-        <Header navHoverBg={navHoverBg} colorText={colorText}/>
+        <Header navHoverBg={navHoverBg} navHoverBg2={navHoverBg2} primaryColor={primaryColor} colorText={colorText} colorText2={colorText2}/>
         {/* <Box>
           <Button as="a" variant={"ghost"} p={[1,2,4]} _hover={{backgroundColor: navHoverBg}}>
             Homei
@@ -49,10 +55,10 @@ const Container = ({children}) => {
         color={colorText}
         as="main"
         justifyContent={"center"}
-        px={[0,4,4]}
-        mt={[4,8,8]}
+        px={[0,0,0]}
+        mt={[0,0,0]}
       >
-        <>{React.cloneElement(children, {navHoverBg: navHoverBg,colorText:colorText})}</>
+        <>{React.cloneElement(children, {primaryColor:primaryColor,navHoverBg: navHoverBg,colorText:colorText,navHoverBg2:navHoverBg2,colorText2:colorText2,})}</>
       </Flex>
     </>
   )

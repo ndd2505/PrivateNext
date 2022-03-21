@@ -28,9 +28,10 @@ import {FaTelegram,FaFacebook,FaInstagram} from 'react-icons/fa'
 import moment from 'moment';
 import { useInViewport } from 'react-in-viewport';
 import { reduce } from 'lodash';
+import { SocialIcon } from 'react-social-icons';
 
-export default function Content(props: { navHoverBg: string,colorText: string}) {
-    const {navHoverBg,colorText} = props
+export default function Content(props: { navHoverBg: string,navHoverBg2: string,primaryColor: string,colorText2: string,colorText: string}) {
+    const {navHoverBg,colorText,navHoverBg2,colorText2,primaryColor} = props
     const { colorMode, toggleColorMode } = useColorMode();
     const ref = useRef()
     const ref2nd = useRef()
@@ -67,7 +68,7 @@ export default function Content(props: { navHoverBg: string,colorText: string}) 
         {title:"Hometown",data:"Phan Thiet \n 86 BinhThuan"},
         {title:"Living In:",data:"GoVap, \n Ho Chi Minh City"},
         {title:"Working:",data:"Software Engineer \n At SieuViet Group"},
-        {title:"Contact:",data:`duy2551999@gmail.com`,icons:[<Icon as={FaTelegram} />,<Icon as={FaFacebook} />,<Icon as={FaInstagram} />]},
+        {title:"Contact:",data:`duy2551999@gmail.com`,icons:[<Icon _groupHover={{color:"#fff"}} color={"#0088cc"} className='mr-2' as={FaTelegram} />,<Icon className='mr-2' as={FaFacebook} color="#1877f2" _groupHover={{color:"#fff"}} />,<Icon _groupHover={{color:"#fff"}} color="#c13584" className='mr-2' as={FaInstagram} />]},
     ]
     
     const info2nd = [
@@ -100,7 +101,7 @@ export default function Content(props: { navHoverBg: string,colorText: string}) 
     ? undefined
     : `${pulse} infinite 2s ease-in-out`
 
-    // console.log(inViewport,enterCount)
+    console.log(colorMode)
     
     return (
         <>
@@ -117,14 +118,16 @@ export default function Content(props: { navHoverBg: string,colorText: string}) 
                                 info1st?.map((infoItem,ind) => (
                                     <GridItem key={ind} rowSpan={{base:4,sm:2,lg:1}} colSpan={{base:4,sm:2,lg:4}}>
                                         <SlideFade offsetX="-40px" offsetY={0} in={inViewport} delay={ind/10+0.5}>
-                                            <Box borderRadius={10} p={2} borderWidth={"1px"} shadow="md">
-                                                <Text fontSize='md' color="gray.500" fontFamily={'Permanent Marker'}>
+                                            <Box role="group" color={colorText}  _hover={{ bg: primaryColor, color: navHoverBg}} borderRadius={10} p={2} borderWidth={"1px"} shadow="md">
+                                                <Text fontSize='md' color={colorText2} fontFamily={'Permanent Marker'}>
                                                     {infoItem?.title}
                                                 </Text>
                                                 <Text fontSize='xl' whiteSpace={"pre-line"}>
                                                     {infoItem?.data}
                                                 </Text>
-                                                {infoItem?.icons}
+                                                <div>
+                                                {infoItem?.icons?.map((item) => <a href="#">{item}</a>)}
+                                                </div>
                                             </Box>
                                         </SlideFade>
                                     </GridItem>
@@ -153,8 +156,8 @@ export default function Content(props: { navHoverBg: string,colorText: string}) 
                         info2nd?.map((itemInfo,ind) => (
                             <GridItem key={ind} rowSpan={{base:4,sm:2,lg:1}} colSpan={{base:4,sm:2,lg:4}}>
                                 <SlideFade offsetX="40px" offsetY={0} in={inViewport2nd} delay={ind/10+0.5}>
-                                    <Box borderRadius={10} p={2} borderWidth={"1px"} shadow="md">
-                                        <Text fontSize='sm' color="gray.500" fontFamily={'Permanent Marker'}>
+                                    <Box role="group" color={colorText}  _hover={{ bg: primaryColor, color: navHoverBg}}  borderRadius={10} p={2} borderWidth={"1px"} shadow="md">
+                                        <Text fontSize='sm' color={colorText2} fontFamily={'Permanent Marker'}>
                                             {itemInfo?.title}
                                         </Text>
                                         <Text fontSize='3xl' lineHeight="2em">
